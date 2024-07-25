@@ -78,6 +78,7 @@ A vehicle is a machine used to transport goods. It has the following properties:
     "location": "Warehouse Location"
   }
   ```
+  
 - **Successful Response:**
   - **Code:** Buscar el código correcto
   - **Response Body:**
