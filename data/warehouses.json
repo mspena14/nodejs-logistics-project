@@ -1,7 +1,8 @@
 [
   {
-    "id": 1,
-    "name": "My Warehouse",
-    "location": "Medellin-Colombia"
+    "id": 2,
+    "name": "warehouse2",
+    "location": "Bogota",
+    "vehicleId": 1
   }
 ]

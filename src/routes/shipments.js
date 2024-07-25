@@ -17,8 +17,8 @@ const readShipmentsFs = async () => {
 const idGenerator = async () => {
     const shipments = await readShipmentsFs();
     if (shipments.length == 0) return 1;
-    const latestShipmentsFs = shipments[(shipments.length -1 )]
-    return latestShipmentsFs.id + 1
+    const latestShipments = shipments[(shipments.length -1 )]
+    return latestShipments.id + 1
 };
 
 const writeShipmentsFs = async (shipments) => {
@@ -26,13 +26,28 @@ const writeShipmentsFs = async (shipments) => {
 };
 
 routerShipment.post("/postShipments", async (req, res) => {
-    const warehouseFound = await fetch(`http://localhost:3000/warehouses/${req.body.warehouseId}`);
+    if (!req.body.item) return res.status(404).send("item property required!");
+    if (!req.body.quantity) return res.status(404).send("quantity property required!");
+    if (!req.body.warehouseId) return res.status(404).send("warehouseId property required!");
+    if (!req.body.driverId) return res.status(404).send("driverId property required!");
+    if (!req.body.vehicleId) return res.status(404).send("vehicleId property required!");
+
+    const warehouseResponse = await fetch(`http://localhost:3000/warehouses/${req.body.warehouseId}`);
+    const driverResponse = await fetch(`http://localhost:3000/drivers/${req.body.driverId}`);
+    const vehicleResponse = await fetch(`http://localhost:3000/vehicles/${req.body.vehicleId}`);
+
+    if (!warehouseResponse.ok) return res.status(404).send("Warehouse id not found!");
+    if (!driverResponse.ok) return res.status(404).send("Driver id not found!");
+    if (!vehicleResponse.ok) return res.status(404).send("Vehicle id not found!");
+
     const shipments = await readShipmentsFs();
     const newShipment = {
         id: await idGenerator(),
         item: req.body.item,
         quantity: req.body.quantity,
-        warehouseId : await warehouseFound.json()
+        warehouseId : req.body.warehouseId,
+        driverId : req.body.driverId,
+        vehicleId : req.body.vehicleId
     };
 
     shipments.push(newShipment);
@@ -53,7 +68,20 @@ routerShipment.get("/:id", async (req, res) => {
 });
 
 routerShipment.put("/:id", async (req, res) => {
-    const warehouseFound = await fetch(`http://localhost:3000/warehouses/${req.body.warehouseId}`);
+    if (!req.body.item) return res.status(404).send("item property required!");
+    if (!req.body.quantity) return res.status(404).send("quantity property required!");
+    if (!req.body.warehouseId) return res.status(404).send("warehouseId property required!");
+    if (!req.body.driverId) return res.status(404).send("driverId property required!");
+    if (!req.body.vehicleId) return res.status(404).send("vehicleId property required!");
+
+    const warehouseResponse = await fetch(`http://localhost:3000/warehouses/${req.body.warehouseId}`);
+    const driverResponse = await fetch(`http://localhost:3000/drivers/${req.body.driverId}`);
+    const vehicleResponse = await fetch(`http://localhost:3000/vehicles/${req.body.vehicleId}`);
+
+    if (!warehouseResponse.ok) return res.status(404).send("Warehouse id not found!");
+    if (!driverResponse.ok) return res.status(404).send("Driver id not found!");
+    if (!vehicleResponse.ok) return res.status(404).send("Vehicle id not found!");
+
     const shipments = await readShipmentsFs();
     const shipmentIndex = shipments.findIndex(s => s.id === parseInt(req.params.id));
 
@@ -62,7 +90,9 @@ routerShipment.put("/:id", async (req, res) => {
         ...shipments[shipmentIndex],
         item: req.body.item,
         quantity: req.body.quantity,
-        warehouseId : await warehouseFound.json()
+        warehouseId : req.body.warehouseId,
+        driverId : req.body.driverId,
+        vehicleId : req.body.vehicleId
     };
 
     shipments[shipmentIndex] = updateShipment;
@@ -70,7 +100,7 @@ routerShipment.put("/:id", async (req, res) => {
     res.status(200).json({message: "Shipments update successfully!", shipment:updateShipment});
 });
 
-routerShipment.delete("/delete/:id", async () => {
+routerShipment.delete("/delete/:id", async (req, res) => {
     let shipments = await readShipmentsFs();
     const shipmentToDelete = shipments.find(s => s.id === parseInt(req.params.id));
 

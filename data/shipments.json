@@ -1,1 +1,36 @@
-[]
+[
+  {
+    "id": 2,
+    "item": "no se x2",
+    "quantity": 50,
+    "warehouseId": 1
+  },
+  {
+    "id": 3,
+    "quantity": 50,
+    "warehouseId": 1
+  },
+  {
+    "id": 4,
+    "quantity": 50,
+    "warehouseId": 1
+  },
+  {
+    "id": 5,
+    "quantity": 50,
+    "warehouseId": 1
+  },
+  {
+    "id": 7,
+    "item": "no se x3",
+    "warehouseId": 1
+  },
+  {
+    "id": 8,
+    "item": "no se x5",
+    "quantity": 50,
+    "warehouseId": 1,
+    "driverId": 1,
+    "vehicleId": 1
+  }
+]

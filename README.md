@@ -68,6 +68,7 @@ A vehicle is a machine used to transport goods. It has the following properties:
 
 ## User Stories
 
+
 ### 1. As a user, I want to create a new warehouse to add to the list of warehouses.
 
 - **Route:** POST /warehouses
@@ -265,3 +266,8 @@ A vehicle is a machine used to transport goods. It has the following properties:
 - [fs](https://nodejs.org/api/fs.html)
 - [Middleware in Express](https://expressjs.com/en/guide/using-middleware.html)
 - [Difference between development and production dependencies](https://dev.to/therealdanvega/what-is-the-difference-between-dependencies-devdependencies-and-peerdependencies-in-a-npm-package-json-file-2b)
+
+
+## Diagrama relaciones
+
+![alt text](<public/images/Screenshot from 2024-07-25 18-24-45.png>)

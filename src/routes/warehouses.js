@@ -29,11 +29,19 @@ const writeWarehousesFs = async (warehouses) => {
 };
 
 routerWarehouse.post("/postWarehouses", async (req, res) => {
+    if (!req.body.name) return res.status(404).send("name property required!");
+    if (!req.body.location) return res.status(404).send("location property required!");
+    if (!req.body.vehicleId) return res.status(404).send("vehicleId property required!");
+
+    const vehicleResponse = await fetch(`http://localhost:3000/vehicles/${req.body.vehicleId}`);
+    if (!vehicleResponse.ok) return res.status(404).send("Vehicle id not found!");
+
     const warehouses = await readWarehousesFs();
     const newWarehouse = {
         id: await idGenerator(),
         name: req.body.name,
-        location:  req.body.location
+        location:  req.body.location,
+        vehicleId: req.body.vehicleId
     };
 
     warehouses.push(newWarehouse);
@@ -53,7 +61,14 @@ routerWarehouse.get("/:id", async (req, res) => {
     res.json({warehouse:warehouse});
 });
 
-routerWarehouse.put("/:id", async () => {
+routerWarehouse.put("/:id", async (req, res) => {
+    if (!req.body.name) return res.status(404).send("name property required!");
+    if (!req.body.location) return res.status(404).send("location property required!");
+    if (!req.body.vehicleId) return res.status(404).send("vehicleId property required!");
+
+    const vehicleResponse = await fetch(`http://localhost:3000/vehicles/${req.body.vehicleId}`);
+    if (!vehicleResponse.ok) return res.status(404).send("Vehicle id not found!");
+
     const warehouses = await readWarehousesFs();
     const warehouseIndex = warehouses.findIndex(w => w.id === parseInt(req.params.id));
 
@@ -61,7 +76,8 @@ routerWarehouse.put("/:id", async () => {
     const updateWarehouse = {
         ...warehouses[warehouseIndex],
         name: req.body.name,
-        location:  req.body.location
+        location:  req.body.location,
+        vehicleId: req.body.vehicleId
     };
 
     warehouses[warehouseIndex] = updateWarehouse;
@@ -69,7 +85,7 @@ routerWarehouse.put("/:id", async () => {
     res.status(200).json({message: "Warehouse update successfully!", warehouse:updateWarehouse});
 });
 
-routerWarehouse.delete("/delete/:id", async () => {
+routerWarehouse.delete("/delete/:id", async (req, res) => {
     let warehouses = await readWarehousesFs();
     const warehouseToDelete = warehouses.find(w => w.id === parseInt(req.params.id));
 

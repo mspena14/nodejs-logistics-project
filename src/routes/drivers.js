@@ -26,10 +26,17 @@ const writeDriversFs = async (drivers) => {
 };
 
 routerDriver.post("/postDrivers", async (req, res) => {
+    if (!req.body.name) return res.status(404).send("name property required!");
+    if (!req.body.warehouseId) return res.status(404).send("warehouseId property required!");
+
+    const warehouseResponse = await fetch(`http://localhost:3000/warehouses/${req.body.warehouseId}`);
+    if (!warehouseResponse.ok) return res.status(404).send("Warehouse id not found!");
+
     const drivers = await readDriversFs();
     const newDriver = {
         id: await idGenerator(),
-        name: req.body.name
+        name: req.body.name,
+        warehouseId: req.body.warehouseId
     };
 
     drivers.push(newDriver);
@@ -50,6 +57,12 @@ routerDriver.get("/:id", async (req, res) => {
 });
 
 routerDriver.put("/:id", async (req, res) => {
+    if (!req.body.name) return res.status(404).send("name property required!");
+    if (!req.body.warehouseId) return res.status(404).send("warehouseId property required!");
+
+    const warehouseResponse = await fetch(`http://localhost:3000/warehouses/${req.body.warehouseId}`);
+    if (!warehouseResponse.ok) return res.status(404).send("Warehouse id not found!");
+    
     const drivers = await readDriversFs();
     const driverIndex = drivers.findIndex(d => d.id === parseInt(req.params.id));
 
@@ -57,6 +70,7 @@ routerDriver.put("/:id", async (req, res) => {
     const updateDriver = {
         ...drivers[driverIndex],
         name: req.body.name,
+        warehouseId: req.body.warehouseId
     };
 
     drivers[driverIndex] = updateDriver;
@@ -64,7 +78,7 @@ routerDriver.put("/:id", async (req, res) => {
     res.status(200).json({message: "Drivers update successfully!", driver:updateDriver});
 });
 
-routerDriver.delete("/delete/:id", async () => {
+routerDriver.delete("/delete/:id", async (req, res) => {
     let drivers = await readDriversFs();
     const driverToDelete = drivers.find(d => d.id === parseInt(req.params.id));
 
@@ -73,6 +87,6 @@ routerDriver.delete("/delete/:id", async () => {
     drivers = drivers.filter(d => d.id !== driverToDelete.id);
     await writeDriversFs(drivers);
     res.status(200).send("Drivers deleted successfully!")
-})
+});
 
 export default routerDriver;
