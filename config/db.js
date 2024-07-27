@@ -5,7 +5,7 @@ const pool = mysql.createPool({
     user: 'uchecfdzdlwyu01s',
     database: 'btb1u63zpcchofpv5qww',
     port: 3306,
-    password: 'KU0ak7svKO3QoKbl6Zx0'
+    password: 'HTU90bPWjp1pOY9YjC8A'
 });
 
 async function getConnection() {
