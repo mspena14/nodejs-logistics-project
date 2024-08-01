@@ -25,7 +25,7 @@ const writeVehiclesFs = async (vehicles) => {
     await fs.writeFile(vehiclesFilePath, JSON.stringify(vehicles, null, 2))
 };
 
-routerVehicle.post("/postVehicles", async (req, res) => {
+routerVehicle.post("/", async (req, res) => {
     if (!req.body.model) return res.status(404).send("model property required!");
     if (!req.body.year) return res.status(404).send("year property required!");
     if (!req.body.driverId) return res.status(404).send("driverId property required!");
@@ -84,7 +84,7 @@ routerVehicle.put("/:id", async (req, res) => {
     res.status(200).json({message: "Vehicles update successfully!", vehicle:updateVehicle});
 });
 
-routerVehicle.delete("/delete/:id", async (req, res) => {
+routerVehicle.delete("/:id", async (req, res) => {
     let vehicles = await readVehiclesFs();
     const vehicleToDelete = vehicles.find(v => v.id === parseInt(req.params.id));
 

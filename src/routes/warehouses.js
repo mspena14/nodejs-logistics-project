@@ -28,7 +28,7 @@ const writeWarehousesFs = async (warehouses) => {
     await fs.writeFile(warehousesFilePath, JSON.stringify(warehouses, null, 2))
 };
 
-routerWarehouse.post("/postWarehouses", async (req, res) => {
+routerWarehouse.post("/", async (req, res) => {
     if (!req.body.name) return res.status(404).send("name property required!");
     if (!req.body.location) return res.status(404).send("location property required!");
     if (!req.body.vehicleId) return res.status(404).send("vehicleId property required!");
@@ -62,10 +62,10 @@ routerWarehouse.get("/:id", async (req, res) => {
 });
 
 routerWarehouse.put("/:id", async (req, res) => {
-    if (!req.body.name) return res.status(404).send("name property required!");
-    if (!req.body.location) return res.status(404).send("location property required!");
-    if (!req.body.vehicleId) return res.status(404).send("vehicleId property required!");
-
+    // if (!req.body.name) return res.status(404).send("name property required!");
+    // if (!req.body.location) return res.status(404).send("location property required!");
+    // if (!req.body.vehicleId) return res.status(404).send("vehicleId property required!");
+    console.log(req.body);
     const vehicleResponse = await fetch(`http://localhost:3000/vehicles/${req.body.vehicleId}`);
     if (!vehicleResponse.ok) return res.status(404).send("Vehicle id not found!");
 
@@ -85,7 +85,7 @@ routerWarehouse.put("/:id", async (req, res) => {
     res.status(200).json({message: "Warehouse update successfully!", warehouse:updateWarehouse});
 });
 
-routerWarehouse.delete("/delete/:id", async (req, res) => {
+routerWarehouse.delete("/:id", async (req, res) => {
     let warehouses = await readWarehousesFs();
     const warehouseToDelete = warehouses.find(w => w.id === parseInt(req.params.id));
 

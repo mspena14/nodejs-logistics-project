@@ -1,8 +1,14 @@
 [
   {
     "id": 2,
-    "name": "warehouse2",
-    "location": "Bogota",
-    "vehicleId": 1
+    "name": "warehouse2 modified",
+    "location": "Bogota 2",
+    "vehicleId": 2
+  },
+  {
+    "id": 3,
+    "name": "warehouse3",
+    "location": "Bogota 3",
+    "vehicleId": 2
   }
 ]

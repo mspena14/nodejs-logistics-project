@@ -4,20 +4,17 @@ import routerWarehouse from "./routes/warehouses.js";
 import routerDriver from "./routes/drivers.js";
 import routerShipment from "./routes/shipments.js";
 import routerVehicle from "./routes/vehicles.js";
-import { routes } from "./routes/router.js";
+// import { routes } from "./routes/router.js";
 
 const app = express();
-const PORT = 3001;
+const PORT = 3000;
 
-// app.use(express.json());
-
-app.use('/', routes)
-
-// app.use("/warehouses", routerWarehouse);
-// app.use("/drivers", routerDriver);
-// app.use("/shipments", routerShipment);
-// app.use("/vehicles", routerVehicle);
-// app.use(errorHundler);
+app.use(express.json());
+app.use("/warehouses", routerWarehouse);
+app.use("/drivers", routerDriver);
+app.use("/shipments", routerShipment);
+app.use("/vehicles", routerVehicle);
+app.use(errorHundler);
 
 
 app.listen(PORT, () => {

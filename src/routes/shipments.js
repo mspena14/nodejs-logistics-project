@@ -25,7 +25,7 @@ const writeShipmentsFs = async (shipments) => {
     await fs.writeFile(shipmentsFilePath, JSON.stringify(shipments, null, 2))
 };
 
-routerShipment.post("/postShipments", async (req, res) => {
+routerShipment.post("/", async (req, res) => {
     if (!req.body.item) return res.status(404).send("item property required!");
     if (!req.body.quantity) return res.status(404).send("quantity property required!");
     if (!req.body.warehouseId) return res.status(404).send("warehouseId property required!");
@@ -100,7 +100,7 @@ routerShipment.put("/:id", async (req, res) => {
     res.status(200).json({message: "Shipments update successfully!", shipment:updateShipment});
 });
 
-routerShipment.delete("/delete/:id", async (req, res) => {
+routerShipment.delete("/:id", async (req, res) => {
     let shipments = await readShipmentsFs();
     const shipmentToDelete = shipments.find(s => s.id === parseInt(req.params.id));
 

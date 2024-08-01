@@ -25,7 +25,7 @@ const writeDriversFs = async (drivers) => {
     await fs.writeFile(driversFilePath, JSON.stringify(drivers, null, 2))
 };
 
-routerDriver.post("/postDrivers", async (req, res) => {
+routerDriver.post("/", async (req, res) => {
     if (!req.body.name) return res.status(404).send("name property required!");
     if (!req.body.warehouseId) return res.status(404).send("warehouseId property required!");
 
@@ -78,7 +78,7 @@ routerDriver.put("/:id", async (req, res) => {
     res.status(200).json({message: "Drivers update successfully!", driver:updateDriver});
 });
 
-routerDriver.delete("/delete/:id", async (req, res) => {
+routerDriver.delete("/:id", async (req, res) => {
     let drivers = await readDriversFs();
     const driverToDelete = drivers.find(d => d.id === parseInt(req.params.id));
 
